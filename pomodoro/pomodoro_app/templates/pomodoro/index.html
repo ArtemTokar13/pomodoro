@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+
+<p id="showtime"></p>
+
+{% if not is_running %}
+    <form id='pomodoro-form' method='POST'>
+        {% csrf_token %}
+        {{ pomodoro_form }}
+        <input id="countdown-time" name="pomodoro" value="Start pomodoro" type="submit"/>
+    </form>
+    
+    <form id='short-break-form' method='POST'>
+        {% csrf_token %}
+        <input id="short-break" name="short-break" value="Short break" type="submit"/>
+    </form>
+    
+    <form id='long-break-form' method='POST'>
+        {% csrf_token %}
+        <input id="long-break" name="long-break" value="Long break" type="submit"/>
+    </form>
+{% else %}
+
+    <form id='end-count' method='POST'>
+        {% csrf_token %}
+        <input id="end-submit" name="end-submit" value="End" type="submit"/>
+    </form>
+{% endif %}
+
+<form id='pomodoro-task-form' method='POST'>
+    {% csrf_token %}
+    {{ pomodoro_task_form }}
+    <button type='submit'>Add</button>
+</form>
+
+<ul>
+    {% for pt in pomodoro_tasks %}
+        <li>{{ pt.title }}</li>
+    {% endfor %}
+</ul>
+
+<script src="{% static 'js/global.js' %}"></script>
+
+</body>
+</html>
